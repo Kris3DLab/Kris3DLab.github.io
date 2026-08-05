@@ -67,10 +67,10 @@ body {
 }
 
 @keyframes floatBlock {
-    0% { opacity: 0; transform: translateY(110vh) rotate(0deg); }
+    0% { opacity: 0; transform: translateY(calc(110vh / var(--scale, 1))) rotate(0deg); }
     10% { opacity: var(--o, 0.25); }
     90% { opacity: var(--o, 0.25); }
-    100% { opacity: 0; transform: translateY(-20vh) rotate(180deg); }
+    100% { opacity: 0; transform: translateY(calc(-20vh / var(--scale, 1))) rotate(180deg); }
 }
 
 .noise {
@@ -201,26 +201,6 @@ nav .container {
     transition: all 0.3s;
 }
 
-@media (max-width: 860px) {
-    .nav-links {
-        position: fixed;
-        top: 68px; right: -100%;
-        flex-direction: column;
-        align-items: flex-start;
-        background: rgba(7, 11, 6, 0.97);
-        border: 1px solid var(--border);
-        border-right: none;
-        border-radius: 0 0 0 16px;
-        padding: 20px 24px;
-        gap: 6px;
-        width: 240px;
-        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .nav-links.open { right: 0; }
-    .hamburger { display: flex; }
-    .nav-cta { margin-left: 0; }
-}
-
 /* ============ Buttons ============ */
 .btn {
     display: inline-flex;
@@ -280,7 +260,7 @@ nav .container {
 
 /* ============ Hero ============ */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh / var(--scale, 1));
     display: flex;
     align-items: center;
     position: relative;
@@ -460,12 +440,6 @@ nav .container {
     letter-spacing: 0.5px;
 }
 
-@media (max-width: 640px) {
-    .stat { padding: 16px 12px; flex: 1; }
-    .stat-number { font-size: 1.3rem; }
-    .stat-label { font-size: 0.7rem; }
-}
-
 /* ============ Sections ============ */
 section {
     padding: 110px 0;
@@ -536,10 +510,6 @@ section {
     grid-template-columns: 1fr 1fr;
     gap: 64px;
     align-items: center;
-}
-
-@media (max-width: 768px) {
-    .about-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
 }
 
 .about-text h2 {
@@ -733,13 +703,6 @@ section {
     gap: 24px;
 }
 
-@media (max-width: 768px) {
-    .videos-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-}
-
 .video-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -880,12 +843,6 @@ section {
     grid-template-columns: 1fr 1fr;
     gap: 0;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-}
-
-@media (max-width: 768px) {
-    .discord-section { grid-template-columns: 1fr 1fr; }
-    .discord-info { padding: 28px 24px; }
-    .discord-widget-wrapper { padding: 20px; }
 }
 
 .discord-info {
@@ -1107,29 +1064,4 @@ footer .pixel-divider {
 .back-top:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px rgba(163, 209, 28, 0.5);
-}
-
-@media (max-width: 768px) {
-    section { padding: 80px 0; }
-    .back-top { bottom: 20px; right: 20px; }
-
-    .about-text h2 { font-size: 1.5rem; }
-    .about-text p { font-size: 0.92rem; }
-    .about-cards { gap: 10px; }
-    .about-card { padding: 18px 14px; }
-    .about-card h3 { font-size: 0.9rem; }
-    .about-card p { font-size: 0.78rem; }
-    .about-card .icon { width: 42px; height: 42px; font-size: 1.2rem; }
-
-    .discord-info h2 { font-size: 1.4rem; }
-    .discord-info > p { font-size: 0.92rem; }
-    .discord-feature { font-size: 0.84rem; gap: 10px; }
-
-    .video-info { padding: 14px; }
-    .video-info h3 { font-size: 0.88rem; }
-    .video-info .video-meta { flex-direction: column; gap: 6px; font-size: 0.74rem; }
-    .video-card .video-thumb .play-btn { width: 44px; height: 44px; font-size: 1rem; }
-
-    .social-link { width: 52px; height: 52px; font-size: 1.3rem; }
-    .section-title { font-size: 1.7rem; }
 }
