@@ -226,17 +226,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 /* ============ Init ============ */
 createFloatingBlocks();
 fetchLatestVideos();
-
-/* ============ Arányos méretezés (egy fix méret, ami skálázódik) ============ */
-const BASE_WIDTH = 1280;
-const MAX_SCALE = 1.5;
-
-function fitPage() {
-    const scale = Math.min(window.innerWidth / BASE_WIDTH, MAX_SCALE);
-    document.documentElement.style.zoom = scale;
-    document.documentElement.style.setProperty('--scale', scale);
-}
-
-window.addEventListener('resize', fitPage);
-window.addEventListener('orientationchange', fitPage);
-fitPage();
