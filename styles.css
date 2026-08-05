@@ -178,7 +178,7 @@ nav .container {
 }
 
 .nav-links a.nav-cta:hover {
-    background: linear-gradient(135deg, var(--lime), var(--accent2));
+    background: linear-gradient(135deg, var(--lime), var(--accent2)) !important;
     color: #0b1208 !important;
     transform: translateY(-2px);
 }
