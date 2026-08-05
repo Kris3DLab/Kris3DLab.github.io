@@ -179,7 +179,7 @@ backTop.addEventListener('click', () => {
 
 /* ============ Active nav link highlighting ============ */
 function highlightActiveNav() {
-    const sections = ['rolam', 'tartalmak', 'video', 'discord'];
+    const sections = ['rolam', 'video', 'discord'];
     const links = document.querySelectorAll('.nav-links a[href^="#"]');
     let current = '';
 
