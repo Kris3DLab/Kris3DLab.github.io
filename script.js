@@ -80,6 +80,9 @@ async function fetchLatestVideos() {
                 if (!thumbnail && videoId) {
                     thumbnail = `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
                 }
+                if (videoId) {
+                    thumbnail = thumbnail.replace(/\/hqdefault\.jpg$/, '/mqdefault.jpg');
+                }
 
                 return { title, videoId, published, thumbnail };
             });
