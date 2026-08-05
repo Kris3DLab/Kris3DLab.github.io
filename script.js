@@ -7,6 +7,44 @@ const PROXIES = [
     url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
 ];
 
+/* ============ Floating Minecraft blocks ============ */
+const BLOCK_COLORS = [
+    '#5b8731', '#22c55e', '#a3d11c', '#7a9e3a',
+    '#6b8e2a', '#8fbf3f', '#4ade80', '#5b8731'
+];
+
+function createFloatingBlocks() {
+    const field = document.getElementById('blockField');
+    if (!field) return;
+
+    const count = window.innerWidth < 768 ? 12 : 22;
+
+    for (let i = 0; i < count; i++) {
+        const block = document.createElement('div');
+        block.className = 'mc-block';
+
+        const size = Math.floor(Math.random() * 20) + 12;
+        const color = BLOCK_COLORS[Math.floor(Math.random() * BLOCK_COLORS.length)];
+        const left = Math.random() * 100;
+        const duration = Math.random() * 20 + 18;
+        const delay = -Math.random() * duration;
+        const opacity = (Math.random() * 0.2 + 0.08).toFixed(2);
+
+        block.style.cssText = `
+            --size: ${size}px;
+            --o: ${opacity};
+            left: ${left}%;
+            background: ${color};
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+            box-shadow: inset 2px 2px 0 rgba(255,255,255,0.15), inset -2px -2px 0 rgba(0,0,0,0.3);
+        `;
+
+        field.appendChild(block);
+    }
+}
+
+/* ============ Videos from RSS feed ============ */
 async function fetchLatestVideos() {
     const container = document.getElementById('videos-container');
     if (!container) return;
@@ -63,7 +101,7 @@ async function fetchLatestVideos() {
 
 function renderVideos(container, videos) {
     container.innerHTML = videos.map((video, i) => `
-        <div class="video-card scroll-reveal">
+        <div class="video-card scroll-reveal" data-delay="${i}">
             <a href="https://www.youtube.com/watch?v=${video.videoId}" target="_blank" rel="noopener" style="text-decoration: none; color: inherit;">
                 <div class="video-thumb">
                     <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
@@ -94,11 +132,13 @@ function formatDate(date) {
     return `${Math.floor(days / 30)} hónapja`;
 }
 
+/* ============ Scroll reveal observer ============ */
 const observer = new IntersectionObserver(
     (entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
             }
         });
     },
@@ -107,14 +147,79 @@ const observer = new IntersectionObserver(
 
 document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
+/* ============ Navbar scroll effect ============ */
+const navbar = document.getElementById('navbar');
+const backTop = document.getElementById('backTop');
+
+function onScroll() {
+    if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+
+    if (window.scrollY > 500) {
+        backTop.classList.add('show');
+    } else {
+        backTop.classList.remove('show');
+    }
+
+    highlightActiveNav();
+}
+
+window.addEventListener('scroll', onScroll);
+onScroll();
+
+backTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ============ Active nav link highlighting ============ */
+function highlightActiveNav() {
+    const sections = ['rolam', 'tartalmak', 'video', 'discord'];
+    const links = document.querySelectorAll('.nav-links a[href^="#"]');
+    let current = '';
+
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) {
+            current = id;
+        }
+    });
+
+    links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+    });
+}
+
+/* ============ Mobile menu ============ */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+});
+
+navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+    });
+});
+
+/* ============ Smooth scroll for anchor links ============ */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const href = this.getAttribute('href');
+        if (href.length > 1) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
     });
 });
 
+/* ============ Init ============ */
+createFloatingBlocks();
 fetchLatestVideos();
